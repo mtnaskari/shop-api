@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import { SERVICE_HOST, SERVICE_PORT } from '../config/env.config'
 import { Controller } from '../controllers/controller.interface'
 import { errorMiddleware } from '../middlewares/error.middleware'
-import { httpResponse } from '../utils/http-response'
+import { HttpResponse } from '../utils/http-response'
 
 export class Server {
   public app: Application
@@ -25,13 +25,13 @@ export class Server {
 
   private initializeControllers(controllers: Controller[]) {
     controllers.forEach((controller) => {
-      this.app.use('/', controller.router)
+      this.app.use('/api', controller.router)
     })
   }
 
   private notFoundHandler() {
     this.app.use((_req, res) => {
-      return httpResponse.notFound(res)
+      return HttpResponse.notFound(res)
     })
   }
 

@@ -1,0 +1,11 @@
+{
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.trailingComma": "single",
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 120,
+  "importSorter.sortConfiguration.customOrderingRules.defaultNumberOfEmptyLinesAfterGroup": 1,
+  "importSorter.importStringConfiguration.hasSemicolon": false,
+  "importSorter.sortConfiguration.removeUnusedDefaultImports": true,
+  "importSorter.sortConfiguration.removeUnusedImports": true,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "maxLineLength"
+}

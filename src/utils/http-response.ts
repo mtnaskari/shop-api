@@ -1,8 +1,8 @@
 import { Response } from 'express'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
 
-class HttpResponse {
-  public ok(res: Response, data: any) {
+export class HttpResponse {
+  static ok(res: Response, data: any) {
     return res.status(StatusCodes.OK).send({
       success: true,
       data,
@@ -30,6 +30,7 @@ class HttpResponse {
     })
   }
 
+  static notFound(res: Response, message: string[] = [ReasonPhrases.NOT_FOUND]) {
     return res.status(StatusCodes.NOT_FOUND).send({
       success: false,
       message,
@@ -50,5 +51,3 @@ class HttpResponse {
     })
   }
 }
-
-export const httpResponse = new HttpResponse()

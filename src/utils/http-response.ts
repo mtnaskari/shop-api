@@ -22,6 +22,14 @@ class HttpResponse {
       message,
     })
   }
+
+  static unauthorized(res: Response, message: string[] = [ReasonPhrases.UNAUTHORIZED]) {
+    return res.status(StatusCodes.UNAUTHORIZED).send({
+      success: false,
+      message,
+    })
+  }
+
     return res.status(StatusCodes.NOT_FOUND).send({
       success: false,
       message,

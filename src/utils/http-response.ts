@@ -36,7 +36,14 @@ class HttpResponse {
     })
   }
 
- public internalServerError(res: Response, message = ReasonPhrases.INTERNAL_SERVER_ERROR) {
+  static conflict(res: Response, message: string[] = [ReasonPhrases.CONFLICT]) {
+    return res.status(StatusCodes.CONFLICT).send({
+      success: false,
+      message,
+    })
+  }
+
+  static internalServerError(res: Response, message: string[] = [ReasonPhrases.INTERNAL_SERVER_ERROR]) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
       success: false,
       message,

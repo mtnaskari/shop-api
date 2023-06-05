@@ -9,7 +9,12 @@ class HttpResponse {
     })
   }
 
-  public notFound(res: Response, message = ReasonPhrases.NOT_FOUND) { 
+  static created(res: Response, data: any) {
+    return res.status(StatusCodes.CREATED).send({
+      success: true,
+      data,
+    })
+  }
     return res.status(StatusCodes.NOT_FOUND).send({
       success: false,
       message,

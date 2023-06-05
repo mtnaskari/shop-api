@@ -15,6 +15,13 @@ class HttpResponse {
       data,
     })
   }
+
+  static badRequest(res: Response, message: string[] = [ReasonPhrases.BAD_REQUEST]) {
+    return res.status(StatusCodes.BAD_REQUEST).send({
+      success: false,
+      message,
+    })
+  }
     return res.status(StatusCodes.NOT_FOUND).send({
       success: false,
       message,

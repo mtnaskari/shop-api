@@ -2,12 +2,12 @@ import { AuthController } from './controllers/auth.controller'
 import { connectToDatabase } from './database/db.connection'
 import { Server } from './server/server'
 import { AuthService } from './services/auth.service'
+import { UserService } from './services/user.service'
 import { AuthValidator } from './validators/auth.validator'
 
 async function main(): Promise<void> {
-  const authService = new AuthService()
-  const authValidator = new AuthValidator(authService)
-  const authController = new AuthController(authService, authValidator)
+
+  const authController = new AuthController(new AuthService(), new AuthValidator(new AuthService()),new UserService())
 
   const server = new Server([authController])
 

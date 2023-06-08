@@ -6,7 +6,7 @@ import { UserModel } from '../database/models/user.model'
 import { IUser } from '../interfaces/user.interface'
 
 export class AuthService {
-  jwtVerifyPromisified(token: string, secret: Secret): Promise<any> {
+  public jwtVerifyPromisified = (token: string, secret: Secret): Promise<any> => {
     return new Promise((resolve, reject) => {
       verify(token, secret, {}, (err, payload) => {
         err ? reject(err) : resolve(payload)
@@ -14,7 +14,7 @@ export class AuthService {
     })
   }
 
-  async authenticateUser(email: string, password: string): Promise<IUser | null> {
+  public authenticateUser = async (email: string, password: string): Promise<IUser | null> => {
     const user = await UserModel.findOne({ email })
     if (!user) return null
 
@@ -25,7 +25,7 @@ export class AuthService {
     return user
   }
 
-  generateToken(id: string): string {
+  public generateToken = (id: string): string => {
     return sign({ id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN,
     })

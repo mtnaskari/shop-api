@@ -8,9 +8,9 @@ import { AuthService } from '../services/auth.service'
 import { HttpResponse } from '../utils/http-response'
 
 export class AuthValidator {
-  constructor(private readonly authService = new AuthService()) {}
+  constructor(private readonly authService: AuthService) {}
 
-  public async registerValidator(req: Request, res: Response, next: NextFunction) {
+  public registerValidator = async (req: Request, res: Response, next: NextFunction) => {
     const { fullName, email, password } = req.body
 
     const createUserDto = new RegisterDTO()
@@ -33,7 +33,7 @@ export class AuthValidator {
     next()
   }
 
-  public async loginValidator(req: Request, res: Response, next: NextFunction) {
+  public loginValidator = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body
 
     const loginUserDto = new LoginDTO()

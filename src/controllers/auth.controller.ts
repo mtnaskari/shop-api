@@ -38,10 +38,10 @@ export class AuthController extends Controller {
   }
 
   private login = (_req: Request, res: Response) => {
-    const { email, _id } = res.locals.user
+    const { email, _id, fullName } = res.locals.user
 
     const token = this.authService.generateToken(_id)
 
-    return HttpResponse.ok(res, { fullName: res.locals.user.fullName, email, token })
+    return HttpResponse.ok(res, { fullName, email, token })
   }
 }

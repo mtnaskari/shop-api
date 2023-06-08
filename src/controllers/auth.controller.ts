@@ -1,24 +1,24 @@
 import { Request, Response, Router } from 'express'
 
-import { generateToken } from '../services/auth.service'
+import { AuthService } from '../services/auth.service'
 import { createUser } from '../services/user.service'
 import { HttpResponse } from '../utils/http-response'
-import { loginValidator } from '../validators/login.validator'
-import { registerValidator } from '../validators/register.validator'
+import { AuthValidator } from '../validators/auth.validator'
 import { Controller } from './controller.interface'
 
 export class AuthController extends Controller {
   readonly router: Router
-
-  constructor() {
-    super('/auth')
+  readonly path: string
+  constructor(private readonly authService: AuthService, private readonly authValidator: AuthValidator) {
+    super()
+    this.path = '/auth'
     this.router = Router()
     this.initializeRoutes()
   }
 
   protected initializeRoutes(): void {
-    this.router.post(`${this.path}/register`, registerValidator, this.register)
-    this.router.post(`${this.path}/login`, loginValidator, this.login)
+    this.router.post(`${this.path}/register`, this.authValidator.registerValidator, this.register)
+    this.router.post(`${this.path}/login`, this.authValidator.loginValidator, this.login)
   }
 
   private async register(req: Request, res: Response) {
@@ -26,18 +26,16 @@ export class AuthController extends Controller {
 
     const userId = await createUser(fullName, email, password)
 
-    const token = generateToken(userId)
+    const token = this.authService.generateToken(userId)
 
     return HttpResponse.created(res, { fullName, email, token })
   }
 
-  private login(req: Request, res: Response) {
-    const { email, password } = req.body
+  private login(_req: Request, res: Response) {
+    const { email, _id } = res.locals.user
 
-    const userId = res.locals.user._id
+    const token = this.authService.generateToken(_id)
 
-    const token = generateToken(userId)
-
-    return HttpResponse.ok(res, { fullName: res.locals.user.fullName, email, password, token })
+    return HttpResponse.ok(res, { fullName: res.locals.user.fullName, email, token })
   }
 }

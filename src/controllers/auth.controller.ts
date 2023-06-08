@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express'
+import { injectable } from 'tsyringe'
 
 import { AuthService } from '../services/auth.service'
 import { UserService } from '../services/user.service'
@@ -6,6 +7,7 @@ import { HttpResponse } from '../utils/http-response'
 import { AuthValidator } from '../validators/auth.validator'
 import { Controller } from './controller.interface'
 
+@injectable()
 export class AuthController extends Controller {
   readonly router: Router
   readonly path: string

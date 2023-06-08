@@ -1,10 +1,12 @@
 import { compare } from 'bcryptjs'
 import { Secret, sign, verify } from 'jsonwebtoken'
+import { injectable } from 'tsyringe'
 
 import { JWT_EXPIRES_IN, JWT_SECRET } from '../config/env.config'
 import { UserModel } from '../database/models/user.model'
 import { IUser } from '../interfaces/user.interface'
 
+@injectable()
 export class AuthService {
   public jwtVerifyPromisified = (token: string, secret: Secret): Promise<any> => {
     return new Promise((resolve, reject) => {

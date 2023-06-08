@@ -17,29 +17,29 @@ export class Server {
     this.errorHandler()
   }
 
-  private initializeMiddlewares() {
+  private initializeMiddlewares = () => {
     this.app.use(morgan('dev'))
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true }))
   }
 
-  private initializeControllers(controllers: Controller[]) {
+  private initializeControllers = (controllers: Controller[]) => {
     controllers.forEach((controller) => {
       this.app.use('/api', controller.router)
     })
   }
 
-  private notFoundHandler() {
+  private notFoundHandler = () => {
     this.app.use((_req, res) => {
       return HttpResponse.notFound(res)
     })
   }
 
-  private errorHandler() {
+  private errorHandler = () => {
     this.app.use(errorMiddleware)
   }
 
-  public listen() {
+  public listen = () => {
     this.app.listen(SERVICE_PORT, SERVICE_HOST, () => {
       console.log(`[i]: Server is running at ${SERVICE_HOST}:${SERVICE_PORT}/api 🚀`)
     })

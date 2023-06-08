@@ -1,5 +1,6 @@
 import { validate, ValidationError } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
+import { injectable } from 'tsyringe'
 
 import { UserModel } from '../database/models/user.model'
 import { LoginDTO } from '../dto/auth/login.dto'
@@ -7,6 +8,7 @@ import { RegisterDTO } from '../dto/auth/register.dto'
 import { AuthService } from '../services/auth.service'
 import { HttpResponse } from '../utils/http-response'
 
+@injectable()
 export class AuthValidator {
   constructor(private readonly authService: AuthService) {}
 

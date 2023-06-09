@@ -50,4 +50,11 @@ export class HttpResponse {
       message,
     })
   }
+
+  static error = (res: Response, statusCode: number, message: string[]) => { 
+    return res.status(statusCode).send({
+      success: false,
+      message,
+    })
+  }
 }

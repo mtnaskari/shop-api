@@ -1,9 +1,9 @@
-import { Document, Schema } from 'mongoose'
+import { Document, ObjectId } from 'mongoose'
 
 import { ICategory } from './category.interface'
 
 export interface IProduct extends Document {
-  _id: Schema.Types.ObjectId
+  _id: ObjectId
   name: string
   image: string
   details: string

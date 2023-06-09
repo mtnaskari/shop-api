@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
+    "category:seed": "node ./dist/database/seeders/category.seed.js",
     "start": "node ./dist/main.js",
     "start:dev": "nodemon ./src/main.ts",
     "check:env": "ts-node ./src/validator/env.validator.ts"

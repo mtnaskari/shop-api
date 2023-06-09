@@ -36,7 +36,7 @@ export const categorySeed = (async () => {
 
     console.log('[Database]: Category seed completed successfully💾')
   } catch (error) {
-    console.error('Error seeding data:', error)
+    console.error('Error seeding categories:', error)
   } finally {
     mongoose.disconnect()
   }

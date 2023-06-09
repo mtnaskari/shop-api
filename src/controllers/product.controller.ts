@@ -27,8 +27,6 @@ export class ProductController extends Controller {
     >req.query
     const { productId } = req.params
 
-    console.log({ name, category, price, sortBy, sortOrder })
-
     const products = await this.productService.findProduct(productId, name, category, price, sortBy, sortOrder)
 
     HttpResponse.ok(res, products)

@@ -12,7 +12,7 @@ Cafe API is a RESTful API that provides endpoints for managing cafes. It allows 
 
 - Register user
 - Login user
-- List all products
+- Get List of all products
 - ...
 
 ## Technologies Used
@@ -50,6 +50,12 @@ Cafe API is a RESTful API that provides endpoints for managing cafes. It allows 
    npm run check:env
    ```
 
+5. To seed the database with categories and products, you can use the following command.
+
+   ```bash
+   npm run seed:all
+   ```
+
 5. Start the development server:
 
    ```bash
@@ -58,4 +64,4 @@ Cafe API is a RESTful API that provides endpoints for managing cafes. It allows 
 
 ## Documentation
 
-The API documentation is available in the [Postman Docs](https://api.postman.com/collections/22129578-03bc1592-3a30-483e-ac06-e9de79851dc7?access_key=PMAT-01H26Q46HHY33Z4TMJ43YZT2VH).
+The API documentation is available in the [Postman Docs](https://elements.getpostman.com/redirect?entityId=22129578-3916c96e-a848-43f8-8de1-521ef61bec75&entityType=collection).

@@ -30,6 +30,13 @@ export class HttpResponse {
     })
   }
 
+  static forbidden = (res: Response, message: string[] = [ReasonPhrases.FORBIDDEN]) => {
+    return res.status(StatusCodes.FORBIDDEN).send({
+      success: false,
+      message,
+    })
+  }
+
   static notFound = (res: Response, message: string[] = [ReasonPhrases.NOT_FOUND]) => {
     return res.status(StatusCodes.NOT_FOUND).send({
       success: false,
@@ -51,7 +58,7 @@ export class HttpResponse {
     })
   }
 
-  static error = (res: Response, statusCode: number, message: string[]) => { 
+  static error = (res: Response, statusCode: number, message: string[]) => {
     return res.status(statusCode).send({
       success: false,
       message,

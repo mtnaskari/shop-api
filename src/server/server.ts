@@ -41,7 +41,7 @@ export class Server {
 
   public listen = () => {
     this.app.listen(SERVICE_PORT, SERVICE_HOST, () => {
-      console.log(`[i]: Server is running at ${SERVICE_HOST}:${SERVICE_PORT}/api 🚀`)
+      console.info(`[i]: Server is running at ${SERVICE_HOST}:${SERVICE_PORT}/api 🚀`)
     })
   }
 }

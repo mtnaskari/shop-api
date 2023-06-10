@@ -17,17 +17,17 @@ function setEnvKeys(): boolean {
   const extraKeys = envKeys.filter((key) => !exampleKeys.includes(key))
 
   if (missingKeys.length > 0 || extraKeys.length > 0) {
-    console.log('Keys do not match:')
+    console.error('Keys do not match:')
     if (missingKeys.length > 0) {
-      console.log('Missing keys:', missingKeys)
+      console.info('Missing keys:', missingKeys)
     }
     if (extraKeys.length > 0) {
-      console.log('Extra keys:', extraKeys)
+      console.info('Extra keys:', extraKeys)
     }
     return false
   }
 
-  console.log('Keys match.')
+  console.info('Keys match.')
   return true
 }
 
@@ -44,7 +44,7 @@ function setEnvExampleKeys(): void {
     throw new Error(`Missing keys in process.env: ${missingKeys.join(', ')}`)
   }
 
-  console.log('All keys from .env.example exist in the environment variables.')
+  console.info('All keys from .env.example exist in the environment variables.')
 }
 
 function readFileContent(path: string): string {

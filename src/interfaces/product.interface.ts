@@ -2,6 +2,9 @@ import { Document, ObjectId } from 'mongoose'
 
 import { ICategory } from './category.interface'
 
+/**
+ * Product interface for the product model
+ */
 export interface IProduct extends Document {
   _id: ObjectId
   name: string

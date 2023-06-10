@@ -5,6 +5,16 @@ import { ProductModel } from '../database/models/product.model'
 
 @injectable()
 export class ProductService {
+  /**
+   * Find a product by id
+   * @param productId Id of the product
+   * @param name Name of the product
+   * @param category Id of the category
+   * @param price Price of the product
+   * @param sortBy The field to sort by that can be name or price
+   * @param sortOrder The order of the sort that can be asc or desc
+   * @returns The product or products found
+   */
   public findProduct = async (
     productId: string,
     name: string,
@@ -23,8 +33,9 @@ export class ProductService {
       price: price ? parseFloat(price.toString()) : { $exists: true },
     }
 
-    let sort = {} as Record<string, 1 | -1 | mongoose.Expression.Meta>
-    sort = sortBy ? { [sortBy.toString()]: sortOrder === 'asc' ? 1 : -1 } : { _id: 1 }
+    const sort: Record<string, 1 | -1 | mongoose.Expression.Meta> = sortBy
+      ? { [sortBy.toString()]: sortOrder === 'asc' ? 1 : -1 }
+      : { _id: 1 }
 
     const lookup = {
       from: 'categories',

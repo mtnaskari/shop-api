@@ -9,6 +9,13 @@ import { HttpResponse } from '../utils/http-response'
 export class ProductValidator {
   constructor() {}
 
+  /**
+   * Validate the request query for the get product endpoint 
+   * @param req the request
+   * @param res the response
+   * @param next the next function 
+   * @returns void 
+   */
   public getProductValidator = async (req: Request, res: Response, next: NextFunction) => {
     const { name, category, price, sortBy, sortOrder } = req.query
 

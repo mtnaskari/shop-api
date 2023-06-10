@@ -27,6 +27,11 @@ export class AuthController extends Controller {
     this.router.post(`${this.path}/login`, this.authValidator.loginValidator, this.login)
   }
 
+  /**
+   * Register a new user with the provided details
+   * @param req
+   * @param res
+   */
   private register = async (req: Request, res: Response) => {
     const { fullName, email, password } = req.body
 
@@ -37,6 +42,11 @@ export class AuthController extends Controller {
     return HttpResponse.created(res, { fullName, email, token })
   }
 
+  /**
+   * Login a user with the provided details
+   * @param _req
+   * @param res
+   */
   private login = (_req: Request, res: Response) => {
     const { email, _id, fullName } = res.locals.user
 

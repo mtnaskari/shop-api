@@ -9,6 +9,14 @@ import { HttpResponse } from '../utils/http-response'
 @injectable()
 export class AuthMiddleware {
   constructor(private readonly authService: AuthService) {}
+
+/**
+ * Protect a route from being accessed by unauthenticated users
+ * @param req The request
+ * @param res The response
+ * @param next The next function 
+ * @returns void 
+ */
   public protect = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
       return HttpResponse.unauthorized(res, ['You are not logged in'])

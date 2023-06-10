@@ -8,6 +8,9 @@ import { ProductController } from './controllers/product.controller'
 import { connectToDatabase } from './database/db.connection'
 import { Server } from './server/server'
 
+/**
+ * The main function of the application
+ */
 async function main(): Promise<void> {
   const authController = container.resolve(AuthController)
 

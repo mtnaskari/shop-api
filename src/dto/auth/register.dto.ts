@@ -1,5 +1,8 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
 
+/**
+ * Register DTO for the register endpoint
+ */
 export class RegisterDTO {
   @IsNotEmpty()
   fullName: string

@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer'
 import { validate, ValidationError } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'tsyringe'
@@ -13,14 +14,9 @@ export class AuthValidator {
   constructor(private readonly authService: AuthService) {}
 
   public registerValidator = async (req: Request, res: Response, next: NextFunction) => {
-    const { fullName, email, password } = req.body
+    const { email } = req.body
 
-    const createUserDto = new RegisterDTO()
-    createUserDto.fullName = fullName
-    createUserDto.email = email
-    createUserDto.password = password
-
-    const errors = await validate(createUserDto)
+    const errors = await validate(plainToInstance(RegisterDTO, req.body))
     if (errors.length > 0) {
       return HttpResponse.badRequest(
         res,
@@ -38,12 +34,9 @@ export class AuthValidator {
   public loginValidator = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body
 
-    const loginUserDto = new LoginDTO()
-
-    loginUserDto.email = email
-    loginUserDto.password = password
-
-    const errors = await validate(loginUserDto)
+    const errors = await validate(plainToInstance(LoginDTO, req.body), {
+      forbidUnknownValues: true,
+    })
     if (errors.length > 0) {
       return HttpResponse.badRequest(
         res,

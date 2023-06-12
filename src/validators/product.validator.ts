@@ -1,3 +1,4 @@
+import { plainToInstance } from 'class-transformer'
 import { validate, ValidationError } from 'class-validator'
 import { NextFunction, Request, Response } from 'express'
 import { injectable } from 'tsyringe'
@@ -10,23 +11,14 @@ export class ProductValidator {
   constructor() {}
 
   /**
-   * Validate the request query for the get product endpoint 
+   * Validate the request query for the get product endpoint
    * @param req the request
    * @param res the response
-   * @param next the next function 
-   * @returns void 
+   * @param next the next function
+   * @returns void
    */
   public getProductValidator = async (req: Request, res: Response, next: NextFunction) => {
-    const { name, category, price, sortBy, sortOrder } = req.query
-
-    const getProductDto = new GetProductDto()
-    getProductDto.sortOrder = name
-    getProductDto.category = category
-    getProductDto.price = price
-    getProductDto.sortBy = sortBy
-    getProductDto.sortOrder = sortOrder
-
-    const errors = await validate(getProductDto)
+    const errors = await validate(plainToInstance(GetProductDto, req.query))
     if (errors.length > 0) {
       return HttpResponse.badRequest(
         res,

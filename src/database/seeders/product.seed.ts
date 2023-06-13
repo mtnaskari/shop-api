@@ -30,7 +30,7 @@ export const seedProducts = (async () => {
 
     await ProductModel.insertMany(products)
 
-    console.log('[Database]: Product seed completed successfully💾')
+    console.info('[Database]: Product seed completed successfully💾')
   } catch (error) {
     console.error('Error seeding products:', error)
   } finally {

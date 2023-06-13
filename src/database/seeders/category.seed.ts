@@ -34,7 +34,7 @@ export const categorySeed = (async () => {
 
     await CategoryModel.insertMany(categories)
 
-    console.log('[Database]: Category seed completed successfully💾')
+    console.info('[Database]: Category seed completed successfully💾')
   } catch (error) {
     console.error('Error seeding categories:', error)
   } finally {

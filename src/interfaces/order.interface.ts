@@ -1,7 +1,10 @@
+import { ObjectId } from 'mongoose'
+
 import { IProduct } from './product.interface'
 import { IUser } from './user.interface'
 
 export interface IOrder extends Document {
+  _id: ObjectId
   user: IUser['_id']
   products: Array<{
     product: IProduct['_id']
@@ -10,8 +13,6 @@ export interface IOrder extends Document {
   totalPrice: number
   status: OrderStatus
 }
-
-
 
 /**
  * Order status enum

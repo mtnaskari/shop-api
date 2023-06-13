@@ -18,16 +18,16 @@ export class ProductController extends Controller {
   }
 
   protected initializeRoutes = (): void => {
-    this.router.get(`${this.path}/:productId?`, this.productValidator.getProductValidator, this.getProduct)
+    this.router.get(`${this.path}/:productId?`, this.productValidator.getProductValidator, this.readProduct)
   }
 
-  private getProduct = async (req: Request, res: Response) => {
+  private readProduct = async (req: Request, res: Response) => {
     const { name, category, price, sortBy, sortOrder } = <
       { name: string; category: string; price: string; sortBy: string; sortOrder: string }
     >req.query
     const { productId } = req.params
 
-    const products = await this.productService.findProduct(productId, name, category, price, sortBy, sortOrder)
+    const products = await this.productService.readProduct(productId, name, category, price, sortBy, sortOrder)
 
     HttpResponse.ok(res, products)
   }

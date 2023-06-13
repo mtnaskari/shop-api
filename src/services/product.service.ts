@@ -15,7 +15,7 @@ export class ProductService {
    * @param sortOrder The order of the sort that can be asc or desc
    * @returns The product or products found
    */
-  public findProduct = async (
+  public readProduct = async (
     productId: string,
     name: string,
     category: string,

@@ -1,4 +1,4 @@
-# Cafe API
+# Shop API
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D%2012.0.0-brightgreen.svg)](https://nodejs.org/)
@@ -6,7 +6,7 @@
 
 ## Description
 
-Cafe API is a RESTful API that provides endpoints for managing cafes. It allows users to perform operations such as creating, updating, and retrieving cafe data.
+Shop API is a RESTful API that provides endpoints for managing shops. It allows users to perform operations such as creating, updating, and retrieving shop data.
 
 ## Features
 
@@ -29,13 +29,13 @@ Cafe API is a RESTful API that provides endpoints for managing cafes. It allows 
 1. Clone the repository:
 
    ```bash
-   git clone git@github.com:mtnaskari/cafe-api.git
+   git clone git@github.com:mtnaskari/shop-api.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd cafe-api
+   cd shop-api
    ```
 
 3. Install the dependencies:

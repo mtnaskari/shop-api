@@ -64,4 +64,6 @@ Shop API is a RESTful API that provides endpoints for managing shops. It allows 
 
 ## Documentation
 
-The API documentation is available in the [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/27911104-5a486073-2478-4bc0-9430-0a807a0da294?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D27911104-5a486073-2478-4bc0-9430-0a807a0da294%26entityType%3Dcollection%26workspaceId%3D37399da0-6a27-485d-9e18-23a277bd324c).
+The API documentation is available in the
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/27911104-5a486073-2478-4bc0-9430-0a807a0da294?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D27911104-5a486073-2478-4bc0-9430-0a807a0da294%26entityType%3Dcollection%26workspaceId%3D37399da0-6a27-485d-9e18-23a277bd324c)

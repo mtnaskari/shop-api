@@ -1,21 +1,21 @@
 import { Type } from 'class-transformer'
-import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsString, ValidateNested } from 'class-validator'
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsInt, IsMongoId, Max, Min, ValidateNested } from 'class-validator'
 
-export class CreateOrderDTO {
-  @IsArray()
-  @IsNotEmpty()
-  @ArrayMinSize(1)
-  @ValidateNested({ each: true })
-  @Type(() => ProductItem)
-  orders: ProductItem[]
-}
-
-export class ProductItem {
-  @IsNotEmpty()
-  @IsString()
+export class OrderItemDto {
+  @IsMongoId({ message: 'product must be a valid id' })
   product: string
 
-  @IsNotEmpty()
-  @IsNumber()
-  amount: number
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  quantity: number
+}
+
+export class CreateOrderDto {
+  @IsArray()
+  @ArrayMinSize(1)
+  @ArrayMaxSize(50)
+  @ValidateNested({ each: true })
+  @Type(() => OrderItemDto)
+  items: OrderItemDto[]
 }

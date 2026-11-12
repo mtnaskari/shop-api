@@ -1,50 +1,42 @@
-import { NextFunction, Request, Response } from 'express'
+import '../types/express'
+
+import { RequestHandler } from 'express'
 import { injectable } from 'tsyringe'
 
-import { JWT_SECRET } from '../config/env.config'
-import { UserModel } from '../database/models/user.model'
-import { UserRole } from '../interfaces/user.interface'
+import { UserRole } from '../database/models/user.model'
 import { AuthService } from '../services/auth.service'
-import { HttpResponse } from '../utils/http-response'
+import { UserService } from '../services/user.service'
+import { HttpException } from '../utils/http-exception'
 
 @injectable()
 export class AuthMiddleware {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
-  /**
-   * Protect a route from being accessed by unauthenticated users
-   * @param req The request
-   * @param res The response
-   * @param next The next function
-   * @returns void
-   */
-  public protect = async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
-      return HttpResponse.unauthorized(res, ['You are not logged in'])
+  /** Require a valid `Authorization: Bearer <token>` header and load the user into `res.locals.user`. */
+  public authenticate: RequestHandler = async (req, res, next) => {
+    const [scheme, token] = req.headers.authorization?.split(' ') ?? []
+    if (scheme !== 'Bearer' || !token) {
+      throw HttpException.unauthorized('Missing or malformed bearer token')
     }
-    const token = req.headers.authorization.split(' ')[1]
 
-    const decoded = await this.authService.jwtVerifyPromisified(token, JWT_SECRET)
-
-    const user = await UserModel.findById(decoded.id)
+    const { sub } = this.authService.verifyToken(token)
+    const user = await this.userService.findById(sub)
+    if (!user) throw HttpException.unauthorized('The user for this token no longer exists')
 
     res.locals.user = user
-
     next()
   }
 
-  /**
-   * Restrict access to the specified user roles
-   * @param roles The user roles allowed to access the route
-   * @returns Middleware function
-   */
-  public restrictTo = (...roles: UserRole[]) => {
-    return (req: Request, res: Response, next: NextFunction) => {
-      const user = res.locals.user
-
-      return !user || !roles.includes(user.role)
-        ? HttpResponse.forbidden(res, ['You are not authorized to perform this action'])
-        : next()
+  /** Allow only the given roles. Must run after `authenticate`. */
+  public authorize =
+    (...roles: UserRole[]): RequestHandler =>
+    (_req, res, next) => {
+      const { user } = res.locals
+      if (!user) throw HttpException.unauthorized()
+      if (!roles.includes(user.role)) throw HttpException.forbidden()
+      next()
     }
-  }
 }

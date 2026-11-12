@@ -1,14 +1,13 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator'
 
-/**
- * Login DTO for the login endpoint 
- */
-export class LoginDTO {
-  @IsNotEmpty()
+import { Normalize } from '../common/transforms'
+
+export class LoginDto {
+  @Normalize()
   @IsEmail()
   email: string
 
+  @IsString()
   @IsNotEmpty()
-  @MinLength(6)
   password: string
 }

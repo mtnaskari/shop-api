@@ -1,22 +1,40 @@
-import { model, Schema } from 'mongoose'
+import { HydratedDocument, model, Schema } from 'mongoose'
 
-import { IUser, UserRole } from '../../interfaces/user.interface'
+import { baseSchemaOptions } from '../schema-options'
 
-const UserSchema = new Schema<IUser>(
+export enum UserRole {
+  Admin = 'admin',
+  Customer = 'customer',
+}
+
+export interface User {
+  fullName: string
+  email: string
+  password: string
+  role: UserRole
+  createdAt: Date
+  updatedAt: Date
+}
+
+export type UserDocument = HydratedDocument<User>
+
+const UserSchema = new Schema<User>(
   {
-    fullName: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    details: { type: String, default: null },
-    role: {
-      type: String,
-      enum: [UserRole.customer, UserRole.admin],
-      default: UserRole.customer,
-    },
+    fullName: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true, select: false },
+    role: { type: String, enum: Object.values(UserRole), default: UserRole.Customer },
   },
   {
-    timestamps: true,
+    ...baseSchemaOptions,
+    toJSON: {
+      ...baseSchemaOptions.toJSON,
+      transform: (doc: unknown, ret: Record<string, unknown>) => {
+        delete ret.password
+        return baseSchemaOptions.toJSON.transform(doc, ret)
+      },
+    },
   },
 )
 
-export const UserModel = model<IUser>('User', UserSchema)
+export const UserModel = model<User>('User', UserSchema)

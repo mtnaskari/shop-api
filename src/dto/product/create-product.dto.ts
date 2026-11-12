@@ -1,0 +1,31 @@
+import { IsBoolean, IsMongoId, IsNumber, IsOptional, IsString, IsUrl, Length, MaxLength, Min } from 'class-validator'
+
+import { Trim } from '../common/transforms'
+
+export class CreateProductDto {
+  @Trim()
+  @IsString()
+  @Length(2, 120)
+  name: string
+
+  @IsOptional()
+  @Trim()
+  @IsString()
+  @MaxLength(1000)
+  description?: string
+
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0)
+  price: number
+
+  @IsMongoId({ message: 'category must be a valid id' })
+  category: string
+
+  @IsOptional()
+  @IsUrl({ protocols: ['http', 'https'], require_protocol: true })
+  image?: string
+
+  @IsOptional()
+  @IsBoolean()
+  isAvailable?: boolean
+}

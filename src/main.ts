@@ -1,31 +1,48 @@
-import 'reflect-metadata'
-import 'express-async-errors'
+import 'dotenv/config'
 
-import { container } from 'tsyringe'
+import { createApp } from './app'
+import { loadConfig } from './config/env'
+import { connectToDatabase, disconnectFromDatabase } from './database/connection'
+import { createLogger } from './utils/logger'
 
-import { AuthController } from './controllers/auth.controller'
-import { OrderController } from './controllers/order.controller'
-import { ProductController } from './controllers/product.controller'
-import { connectToDatabase } from './database/db.connection'
-import { Server } from './server/server'
+const logger = createLogger('server')
+const SHUTDOWN_TIMEOUT_MS = 10_000
 
-/**
- * The main function of the application
- */
-async function main(): Promise<void> {
-  const authController = container.resolve(AuthController)
+async function bootstrap(): Promise<void> {
+  const config = loadConfig()
+  await connectToDatabase(config.mongoUri)
 
-  const productController = container.resolve(ProductController)
+  const app = createApp(config)
+  const server = app.listen(config.port, config.host, () => {
+    logger.info(`Listening on http://${config.host}:${config.port} (API docs at /docs)`)
+  })
 
-  const orderController = container.resolve(OrderController)
+  let shuttingDown = false
+  const shutdown = (signal: NodeJS.Signals) => {
+    if (shuttingDown) return
+    shuttingDown = true
+    logger.info(`${signal} received, shutting down`)
 
-  const server = new Server([authController, productController, orderController])
+    // Stop accepting connections, let in-flight requests finish, then close the database.
+    const timer = setTimeout(() => {
+      logger.error('Graceful shutdown timed out, forcing exit')
+      process.exit(1)
+    }, SHUTDOWN_TIMEOUT_MS)
+    timer.unref()
 
-  await connectToDatabase()
+    server.close(async (error) => {
+      if (error) logger.error('Error while closing the HTTP server', error)
+      await disconnectFromDatabase()
+      process.exit(error ? 1 : 0)
+    })
+    server.closeIdleConnections()
+  }
 
-  server.listen()
+  process.once('SIGTERM', shutdown)
+  process.once('SIGINT', shutdown)
 }
 
-main().catch((error) => {
-  throw new Error(error)
+bootstrap().catch((error: unknown) => {
+  logger.error('Failed to start', error instanceof Error ? error.message : error)
+  process.exit(1)
 })

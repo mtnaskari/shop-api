@@ -1,17 +1,20 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator'
+import { IsEmail, IsString, Length, MaxLength, MinLength } from 'class-validator'
 
-/**
- * Register DTO for the register endpoint
- */
-export class RegisterDTO {
-  @IsNotEmpty()
+import { Normalize, Trim } from '../common/transforms'
+
+export class RegisterDto {
+  @Trim()
+  @IsString()
+  @Length(2, 100)
   fullName: string
 
-  @IsNotEmpty()
+  @Normalize()
   @IsEmail()
   email: string
 
-  @IsNotEmpty()
-  @MinLength(6)
+  @IsString()
+  @MinLength(8)
+  // bcrypt only uses the first 72 bytes of a password.
+  @MaxLength(72)
   password: string
 }

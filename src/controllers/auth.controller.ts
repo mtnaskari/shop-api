@@ -1,57 +1,41 @@
-import { Request, Response, Router } from 'express'
+import { Request, Response } from 'express'
 import { injectable } from 'tsyringe'
 
+import { LoginDto } from '../dto/auth/login.dto'
+import { RegisterDto } from '../dto/auth/register.dto'
+import { AuthMiddleware } from '../middlewares/auth.middleware'
+import { validateRequest } from '../middlewares/validate.middleware'
 import { AuthService } from '../services/auth.service'
-import { UserService } from '../services/user.service'
 import { HttpResponse } from '../utils/http-response'
-import { AuthValidator } from '../validators/auth.validator'
-import { Controller } from './controller.interface'
+import { Controller } from './controller'
 
 @injectable()
 export class AuthController extends Controller {
-  readonly router: Router
-  readonly path: string
+  readonly path = '/auth'
+
   constructor(
     private readonly authService: AuthService,
-    private readonly authValidator: AuthValidator,
-    private readonly userService: UserService,
+    private readonly auth: AuthMiddleware,
   ) {
     super()
-    this.path = '/auth'
-    this.router = Router()
     this.initializeRoutes()
   }
 
-  protected initializeRoutes = (): void => {
-    this.router.post(`${this.path}/register`, this.authValidator.registerValidator, this.register)
-    this.router.post(`${this.path}/login`, this.authValidator.loginValidator, this.login)
+  protected initializeRoutes(): void {
+    this.router.post(`${this.path}/register`, validateRequest(RegisterDto), this.register)
+    this.router.post(`${this.path}/login`, validateRequest(LoginDto), this.login)
+    this.router.get(`${this.path}/me`, this.auth.authenticate, this.me)
   }
 
-  /**
-   * Register a new user with the provided details
-   * @param req
-   * @param res
-   */
   private register = async (req: Request, res: Response) => {
-    const { fullName, email, password } = req.body
-
-    const userId = await this.userService.createUser(fullName, email, password)
-
-    const token = this.authService.generateToken(userId)
-
-    return HttpResponse.created(res, { fullName, email, token })
+    return HttpResponse.created(res, await this.authService.register(req.body as RegisterDto))
   }
 
-  /**
-   * Login a user with the provided details
-   * @param _req
-   * @param res
-   */
-  private login = (_req: Request, res: Response) => {
-    const { email, _id, fullName } = res.locals.user
+  private login = async (req: Request, res: Response) => {
+    return HttpResponse.ok(res, await this.authService.login(req.body as LoginDto))
+  }
 
-    const token = this.authService.generateToken(_id)
-
-    return HttpResponse.ok(res, { fullName, email, token })
+  private me = (_req: Request, res: Response) => {
+    return HttpResponse.ok(res, res.locals.user)
   }
 }

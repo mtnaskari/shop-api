@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/banner-dark.png">
+  <img alt="shop-api: coffee shop REST API with JWT auth, product search, orders and OpenAPI docs" src="docs/assets/banner-light.png" width="100%">
+</picture>
+
 # Shop API
 
 [![CI](https://github.com/mtnaskari/shop-api/actions/workflows/ci.yml/badge.svg)](https://github.com/mtnaskari/shop-api/actions/workflows/ci.yml)

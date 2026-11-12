@@ -5,6 +5,7 @@ import cors from 'cors'
 import express, { Application } from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
+import swaggerUi from 'swagger-ui-express'
 import { container as rootContainer } from 'tsyringe'
 
 import { APP_CONFIG, AppConfig, NodeEnv } from './config/env'
@@ -14,6 +15,7 @@ import { Controller } from './controllers/controller'
 import { HealthController } from './controllers/health.controller'
 import { OrderController } from './controllers/order.controller'
 import { ProductController } from './controllers/product.controller'
+import { openApiDocument } from './docs/openapi'
 import { errorMiddleware, notFoundMiddleware } from './middlewares/error.middleware'
 import { createRateLimiter } from './middlewares/rate-limit.middleware'
 
@@ -37,6 +39,10 @@ export function createApp(config: AppConfig): Application {
   if (config.nodeEnv !== NodeEnv.Test) {
     app.use(morgan(config.nodeEnv === NodeEnv.Production ? 'combined' : 'dev'))
   }
+
+  app.get('/', (_req, res) => res.redirect('/docs'))
+  app.get('/docs.json', (_req, res) => res.json(openApiDocument))
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(openApiDocument, { customSiteTitle: 'Shop API docs' }))
 
   app.use(container.resolve(HealthController).router)
 

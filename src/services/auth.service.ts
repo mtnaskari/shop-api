@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs'
-import { Secret, sign, verify } from 'jsonwebtoken'
+import { Secret, sign, SignOptions, verify } from 'jsonwebtoken'
 import { ObjectId } from 'mongoose'
 import { injectable } from 'tsyringe'
 
@@ -49,7 +49,7 @@ export class AuthService {
    */
   public generateToken = (id: ObjectId): string => {
     return sign({ id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN,
+      expiresIn: JWT_EXPIRES_IN as SignOptions['expiresIn'],
     })
   }
 }

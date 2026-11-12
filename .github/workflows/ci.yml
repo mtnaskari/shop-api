@@ -16,6 +16,8 @@ jobs:
   check:
     name: Lint, build and test (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
+    env:
+      MONGOMS_DOWNLOAD_DIR: ${{ github.workspace }}/.mongodb-binaries
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +33,7 @@ jobs:
       - name: Cache MongoDB binary
         uses: actions/cache@v6
         with:
-          path: ~/.cache/mongodb-binaries
+          path: ${{ env.MONGOMS_DOWNLOAD_DIR }}
           key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package.json') }}
 
       - run: npm ci
